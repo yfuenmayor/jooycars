@@ -1,0 +1,21 @@
+{
+  "name": "jooycar",
+  "version": "1.0.0",
+  "description": "REST API conocimientos Node.js y MongoDB",
+  "main": "index.js",
+  "scripts": {
+    "start": "node .",
+    "dev": "nodemon ."
+  },
+  "author": "Yohan Fuenmayor",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "dreamjs": "^0.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.9"
+  }
+}
