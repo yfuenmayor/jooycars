@@ -12,8 +12,7 @@
 
 ## Endpoints
 - `/personas` : muestra todos los datos de la coleccion ó inserta los datos en la coleccion. <br>
-- `/personas/count?edad=n&grupo=xxxx` : muestra los resultados segun los requerimientos de la prueba en donde ***n*** es un numero `int` <br>
-y ***xxxx*** es un `string` con las opciones `genero | region`
+- `/personas/count?edad=n&grupo=xxxx` : muestra los resultados segun los requerimientos de la prueba en donde ***n*** es un numero `int` y ***xxxx*** es un `string` con las opciones `genero | region`
 
 ## Script
 - Para iniciar la API en modo `DEV`: ***npm run dev*** <br>
@@ -21,5 +20,6 @@ y ***xxxx*** es un `string` con las opciones `genero | region`
 
 ## NOTAS:
 
-- Se creo un `branch` adicional con el nombre de ***auto_carga*** en el cual la API carga los datos de la coleccion luego de conectar con la DB
-- En `master` la carga de los datos se hace a travez del endpoint : ***/personas***
+- Se creo un `branch` adicional con el nombre de ***auto_carga*** en el cual la API carga los datos de la coleccion luego de conectar con la DB <br>
+- En `master` la carga de los datos se hace a travez del endpoint : ***/personas*** <br>
+- La API no tiene validaciones de token ni nada mas adicional ya que solo se realizo lo requerido por la empresa.

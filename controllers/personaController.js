@@ -10,22 +10,17 @@ const createData = require('../middleware/createData');
 exports.crearPersonas = async (req,res) => {
 	try {
 		//Consultamos si hay datos cargados
-		let cargados = await Persona.find();
+		let result = await Persona.find();
 		//Validamos si la coleccion tiene datos
-		if (cargados && cargados.length > 0) {
-			return res.status(400).json({ msg: "La coleccion personas ya tiene datos guardados" })
+		if (result && result.length < 0) {
+			return res.status(400).json({ msg: "La coleccion personas no tiene datos guardados" })
 		}
 
-		//Creamos los datos
-		const data = createData()
-		// Insertamos en la base de datos
-		await Persona.insertMany(data);
-		//Notificamos que los datos se guardaron correctamente
-		return res.json({ msg: 'Datos creados correctamente!'});
+		return res.json(result);
 
 	} catch (error) {
 		//Notificamos que hubo un error en la creacion de los datos
-		return res.status(400).send('Hubo un error en la creacion de los datos');
+		return res.status(400).send('Hubo un error en la consulta');
 	}
 }
 

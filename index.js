@@ -1,6 +1,7 @@
 require('dotenv').config({ path: 'variables.env'});
 const express = require('express');
 const conectarDB = require('./config/db');
+const createData = require('./middleware/createData');
 
 
 // -- Creamos el server
@@ -8,6 +9,9 @@ const app = express();
 
 // -- Conectar a la DB
 conectarDB();
+
+// -- Cargamos los datos a la base
+createData();
 
 // -- Habilitamos express.json
 app.use( express.json({ extended: true}));
