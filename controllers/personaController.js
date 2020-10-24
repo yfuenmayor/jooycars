@@ -1,27 +1,13 @@
 //Importamos el modelo
 const Persona = require('../models/Personas');
-//Importamos libreria Dream
-const dream = require('dreamjs');
+//Importamos middleware para crear la data desde la libreria Dream
+const createData = require('../middleware/createData');
 
 //----------------------------------------------------------------//
 //Creamos el metodo para ingresar las personas a la base de datos//
 //----------------------------------------------------------------//
 
 exports.crearPersonas = async (req,res) => {
-
-		//Configuramos los tipos de datos
-		dream.customType('genero', /(Femenino|Masculino)/);
-		dream.customType('edad', (h) => { return h.chance.integer({ min: 15, max: 99 })});
-		dream.customType('region', (h) => { return h.chance.string({ length: 2,numeric: true})});
-
-		//Configuramos el schema de datos a generar
-		dream.schema('Persona',{
-			genero: 'genero',
-			edad: 'edad',
-			region: 'region'
-		});
-
-
 	try {
 		//Consultamos si hay datos cargados
 		let cargados = await Persona.find();
@@ -31,8 +17,8 @@ exports.crearPersonas = async (req,res) => {
 		}
 
 		//Creamos los datos
-		const data =dream.useSchema('Persona').generateRnd(100).output();
-		//Insertamos en la base de datos
+		const data = createData()
+		// Insertamos en la base de datos
 		await Persona.insertMany(data);
 		//Notificamos que los datos se guardaron correctamente
 		return res.json({ msg: 'Datos creados correctamente!'});
@@ -48,14 +34,16 @@ exports.crearPersonas = async (req,res) => {
 //-----------------------------------------------------------------------------------//
 
 exports.countPersonas = async (req,res) => {
-
 	//Destructuring de los datos enviados por GET
 	const { edad, grupo} = req.query;
 
 	//Validamos si la coleccion tiene datos
-	if(!edad && !grupo) {
+	if(!edad || !grupo) {
 		return res.status(400).json({ msg: "Por favor verificar endpoint : /count?edad=1&grupo=genero" });
 	};
+
+	//Validamos que el grupo sea un objeto valido
+	if(grupo.toLowerCase().trim() === 'genero' || grupo.toLowerCase().trim() === 'region') {
 
 	//Ejecutamos las acciones segun los requerimientos
 	try{
@@ -64,6 +52,11 @@ exports.countPersonas = async (req,res) => {
 			{ $match: { edad: parseInt(edad) } },
 			{ $group: { _id: `$${grupo}`, suma: { $sum: 1} } }
 		]);
+
+		//Validamos que la coleccion tenga datos guardados
+		if (personas && personas.length === 0) {
+			return res.json({ msg: "No hay resultados para mostrar" })
+		}
 
 		//Creamos la respuesta segun los requerimientos
 		const result = personas.reduce((ac,el) =>{
@@ -79,10 +72,9 @@ exports.countPersonas = async (req,res) => {
 		// res.send(error)
 	}
 
-}
-
-
-//Metodo opcional para vaciar coleccion de datos
-exports.dropPersonas = async (req,res) =>{
+	} else {
+		return res.status(400).json({ msg: "Por favor ingrese una opcion valida: genero, region." });
+	}
 
 }
+
