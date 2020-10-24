@@ -27,7 +27,7 @@ const createData = async () => {
 		});
 
 		//Creamos los datos
-		const data =Dream.useSchema('Persona').generateRnd(1500).output();
+		const data =Dream.useSchema('Persona').generateRnd(100).output();
 		// Insertamos en la base de datos
 		await Persona.insertMany(data);
 		//Notificamos que los datos se guardaron correctamente
